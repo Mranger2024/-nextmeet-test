@@ -10,9 +10,7 @@ const httpServer = createServer(app)
 
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.NODE_ENV === 'production' 
-      ? [process.env.NEXT_PUBLIC_SITE_URL || 'https://your-app.vercel.app']
-      : ["http://localhost:3000", "http://127.0.0.1:3000"],
+    origin: "*", // Allow all origins temporarily
     methods: ["GET", "POST"],
     credentials: true
   }

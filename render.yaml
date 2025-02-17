@@ -3,12 +3,13 @@ services:
     name: nextmeet-socket-server
     env: node
     plan: free
+    rootDirectory: /
     buildCommand: npm install
     startCommand: npm run server:prod
     envVars:
       - key: NODE_ENV
         value: production
-      - key: NEXT_PUBLIC_SITE_URL
-        value: https://your-nextjs-app.vercel.app # You'll need to update this
+      - key: PORT
+        value: 10000
     healthCheckPath: /healthcheck
     autoDeploy: true
