@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "server": "tsx watch server/index.ts",
+    "server:prod": "tsx server/index.ts",
     "dev:all": "concurrently \"npm run dev\" \"npm run server\""
   },
   "dependencies": {

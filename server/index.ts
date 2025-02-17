@@ -10,7 +10,9 @@ const httpServer = createServer(app)
 
 const io = new Server(httpServer, {
   cors: {
-    origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+    origin: process.env.NODE_ENV === 'production' 
+      ? [process.env.NEXT_PUBLIC_SITE_URL || 'https://your-app.vercel.app']
+      : ["http://localhost:3000", "http://127.0.0.1:3000"],
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -36,6 +38,10 @@ app.get('/health', (_, res) => {
     connections: io.engine.clientsCount,
     uptime: process.uptime()
   })
+})
+
+app.get('/healthcheck', (_, res) => {
+  res.send('Socket.IO server is healthy')
 })
 
 io.on('connection', (socket) => {
@@ -103,7 +109,19 @@ function findMatch(socket: any) {
   }
 }
 
-const PORT = process.env.PORT || 3001
-httpServer.listen(PORT, '0.0.0.0', () => { // Listen on all network interfaces
-  console.log(`Server running on port ${PORT}`)
-}) 
+io.on("connect_error", (err) => {
+  console.log(`Connection error: ${err.message}`)
+})
+
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err)
+})
+
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled Rejection:', err)
+})
+
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3001
+httpServer.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT} in ${process.env.NODE_ENV || 'development'} mode`)
+})

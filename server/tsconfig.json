@@ -4,7 +4,13 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "outDir": "../dist",
-    "noEmit": false
+    "noEmit": false,
+    "target": "es2015",
+    "lib": ["es2015", "dom"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
   "include": ["./**/*.ts"]
-} 
+}
